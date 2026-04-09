@@ -3,7 +3,7 @@
 import pytest
 
 from negotiate.engine import (
-    MAX_ROUNDS,
+    GUARANTEED_ROUNDS,
     NO_DEAL_PENALTY,
     RESOURCE_TYPES,
     TARGET_VALUE,
@@ -180,15 +180,20 @@ class TestBuildTurnPrompt:
     def test_empty_history(self):
         pool = {"books": 3, "hats": 2, "balls": 5}
         prompt = build_turn_prompt([], "A", 1, pool)
-        assert "Round 1/5" in prompt
+        assert "Round 1 —" in prompt
         assert "Player A" in prompt
         assert "NEGOTIATION HISTORY" not in prompt
 
-    def test_final_round_warning(self):
+    def test_overtime_warning(self):
         pool = {"books": 3, "hats": 2, "balls": 5}
-        prompt = build_turn_prompt([], "A", MAX_ROUNDS, pool)
-        assert "FINAL ROUND" in prompt
+        prompt = build_turn_prompt([], "A", GUARANTEED_ROUNDS + 1, pool)
+        assert "OVERTIME" in prompt
         assert "-0.5" in prompt
+
+    def test_no_overtime_warning_in_guaranteed_rounds(self):
+        pool = {"books": 3, "hats": 2, "balls": 5}
+        prompt = build_turn_prompt([], "A", GUARANTEED_ROUNDS, pool)
+        assert "OVERTIME" not in prompt
 
     def test_history_shows_proposals(self):
         history = [

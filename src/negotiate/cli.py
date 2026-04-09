@@ -12,7 +12,7 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.text import Text
 
-from .engine import RESOURCE_TYPES, RULES_PREAMBLE, MAX_ROUNDS
+from .engine import RESOURCE_TYPES, RULES_PREAMBLE, HARD_MAX_ROUNDS
 
 console = Console()
 
@@ -48,7 +48,7 @@ def _render_game(game: dict, index: int, show_reasoning: bool = False):
     user_role = game.get("user_role", "A")
     outcome = "[green]DEAL[/green]" if game["deal_reached"] else "[red]NO DEAL[/red]"
     header = (
-        f"Game {index + 1} (You={user_role})  |  {outcome} round {game['final_round']}/{MAX_ROUNDS}  |  "
+        f"Game {index + 1} (You={user_role})  |  {outcome} round {game['final_round']}  |  "
         f"You: {game['user_score']:.2f}  Baseline: {game['baseline_score']:.2f}\n"
         f"Pool: {pool_str}\n"
         f"Your vals: {val_u_str}  |  Baseline vals: {val_b_str}"
