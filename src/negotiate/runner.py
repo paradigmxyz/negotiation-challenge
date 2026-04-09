@@ -10,7 +10,6 @@ from typing import Optional, Callable
 from google import genai
 
 from .engine import (
-    BASELINE_STRATEGY,
     END_PROBABILITY,
     GUARANTEED_ROUNDS,
     HARD_MAX_ROUNDS,
@@ -44,11 +43,11 @@ async def run_game(
     if user_goes_first:
         vals_a, vals_b = vals_user, vals_baseline
         sys_a = build_system_prompt("A", pool, vals_a, custom_strategy=user_prompt)
-        sys_b = build_system_prompt("B", pool, vals_b, custom_strategy=BASELINE_STRATEGY)
+        sys_b = build_system_prompt("B", pool, vals_b)
         user_role = "A"
     else:
         vals_a, vals_b = vals_baseline, vals_user
-        sys_a = build_system_prompt("A", pool, vals_a, custom_strategy=BASELINE_STRATEGY)
+        sys_a = build_system_prompt("A", pool, vals_a)
         sys_b = build_system_prompt("B", pool, vals_b, custom_strategy=user_prompt)
         user_role = "B"
 
